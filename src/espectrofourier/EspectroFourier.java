@@ -5,6 +5,8 @@
  */
 package espectrofourier;
 
+import org.opencv.core.Core;
+
 /**
  *
  * @author Roberto Cruz Leija
@@ -16,6 +18,7 @@ public class EspectroFourier {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         JFrameFourier frame = new JFrameFourier();
         frame.setVisible(true);
     }

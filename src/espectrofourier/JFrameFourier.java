@@ -5,12 +5,19 @@
  */
 package espectrofourier;
 
+import java.awt.Image;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Roberto Cruz Leija
  */
 public class JFrameFourier extends javax.swing.JFrame {
      String ruta;
+     Fourier fourier ;
     /**
      * Creates new form JFrameFourier
      */
@@ -29,6 +36,7 @@ public class JFrameFourier extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanelOriginal = new javax.swing.JPanel();
+        jLabelImagenOriginal = new javax.swing.JLabel();
         jPanelEspectro = new javax.swing.JPanel();
         jPanelFiltro = new javax.swing.JPanel();
         jPanelResultado = new javax.swing.JPanel();
@@ -41,11 +49,15 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelOriginal.setLayout(jPanelOriginalLayout);
         jPanelOriginalLayout.setHorizontalGroup(
             jPanelOriginalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1070, Short.MAX_VALUE)
+            .addGroup(jPanelOriginalLayout.createSequentialGroup()
+                .addComponent(jLabelImagenOriginal)
+                .addGap(0, 1070, Short.MAX_VALUE))
         );
         jPanelOriginalLayout.setVerticalGroup(
             jPanelOriginalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+            .addGroup(jPanelOriginalLayout.createSequentialGroup()
+                .addComponent(jLabelImagenOriginal)
+                .addGap(0, 890, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Imagen Original", jPanelOriginal);
@@ -135,15 +147,22 @@ public class JFrameFourier extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       // abrir la imagen 
-      ruta = IOImage.abrirImagen();
-       
+         try {
+             // abrir la imagen
+             ruta = IOImage.abrirImagen();
+             fourier = new Fourier(ruta);
+             fourier.generarImagen();
+             Image io = fourier.matToImage(fourier.getImagenOriginal());
+             this.jLabelImagenOriginal.setIcon(new ImageIcon(io));
+         } catch (IOException ex) {
+             Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Fourier fourier = new Fourier(ruta);
-        fourier.generarImagen();
+        
+        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -185,6 +204,7 @@ public class JFrameFourier extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabelImagenOriginal;
     private javax.swing.JPanel jPanelEspectro;
     private javax.swing.JPanel jPanelFiltro;
     private javax.swing.JPanel jPanelOriginal;

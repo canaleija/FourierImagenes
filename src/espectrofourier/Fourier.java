@@ -28,7 +28,7 @@ public class Fourier {
     }
     public void generarImagen(){
       // leer la imagen desde l ruta
-      this.imagenOriginal = Imgcodecs.imread(ruta,Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE);
+      this.imagenOriginal = Imgcodecs.imread(ruta,Imgcodecs.CV_LOAD_IMAGE_COLOR);
       System.out.println();
         
     }
@@ -45,6 +45,13 @@ public class Fourier {
         
         return i;
         
+    }
+
+    /**
+     * @return the imagenOriginal
+     */
+    public Mat getImagenOriginal() {
+        return imagenOriginal;
     }
      
     
