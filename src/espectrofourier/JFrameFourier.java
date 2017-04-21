@@ -38,6 +38,7 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelOriginal = new javax.swing.JPanel();
         jLabelImagenOriginal = new javax.swing.JLabel();
         jPanelEspectro = new javax.swing.JPanel();
+        jLabelEspectro = new javax.swing.JLabel();
         jPanelFiltro = new javax.swing.JPanel();
         jPanelResultado = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -66,11 +67,15 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelEspectro.setLayout(jPanelEspectroLayout);
         jPanelEspectroLayout.setHorizontalGroup(
             jPanelEspectroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1070, Short.MAX_VALUE)
+            .addGroup(jPanelEspectroLayout.createSequentialGroup()
+                .addComponent(jLabelEspectro)
+                .addGap(0, 1070, Short.MAX_VALUE))
         );
         jPanelEspectroLayout.setVerticalGroup(
             jPanelEspectroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+            .addGroup(jPanelEspectroLayout.createSequentialGroup()
+                .addComponent(jLabelEspectro)
+                .addGap(0, 890, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Espectro de Frecuencias", jPanelEspectro);
@@ -160,9 +165,13 @@ public class JFrameFourier extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
-        
+               
+         try {
+             Image imagenFrecuencias = this.fourier.transformImage();
+             this.jLabelEspectro.setIcon(new ImageIcon(imagenFrecuencias));
+         } catch (IOException ex) {
+             Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
+         }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -204,6 +213,7 @@ public class JFrameFourier extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabelEspectro;
     private javax.swing.JLabel jLabelImagenOriginal;
     private javax.swing.JPanel jPanelEspectro;
     private javax.swing.JPanel jPanelFiltro;
