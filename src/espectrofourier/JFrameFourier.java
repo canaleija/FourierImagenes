@@ -5,11 +5,13 @@
  */
 package espectrofourier;
 
+import filtros.Filtros;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import org.opencv.core.Size;
 
 /**
  *
@@ -40,9 +42,11 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelEspectro = new javax.swing.JPanel();
         jLabelEspectro = new javax.swing.JLabel();
         jPanelFiltro = new javax.swing.JPanel();
+        jLabelFiltro = new javax.swing.JLabel();
         jPanelResultado = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,11 +88,15 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelFiltro.setLayout(jPanelFiltroLayout);
         jPanelFiltroLayout.setHorizontalGroup(
             jPanelFiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1070, Short.MAX_VALUE)
+            .addGroup(jPanelFiltroLayout.createSequentialGroup()
+                .addComponent(jLabelFiltro)
+                .addGap(0, 1070, Short.MAX_VALUE))
         );
         jPanelFiltroLayout.setVerticalGroup(
             jPanelFiltroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+            .addGroup(jPanelFiltroLayout.createSequentialGroup()
+                .addComponent(jLabelFiltro)
+                .addGap(0, 890, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Filtro", jPanelFiltro);
@@ -120,6 +128,13 @@ public class JFrameFourier extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Filtro Ideal Pasa Altas");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,7 +148,9 @@ public class JFrameFourier extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addComponent(jButton1)
                         .addGap(40, 40, 40)
-                        .addComponent(jButton2)))
+                        .addComponent(jButton2)
+                        .addGap(41, 41, 41)
+                        .addComponent(jButton3)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -144,7 +161,8 @@ public class JFrameFourier extends javax.swing.JFrame {
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -157,7 +175,7 @@ public class JFrameFourier extends javax.swing.JFrame {
              ruta = IOImage.abrirImagen();
              fourier = new Fourier(ruta);
              fourier.generarImagen();
-             Image io = fourier.matToImage(fourier.getImagenOriginal());
+             Image io = Filtros.matToImage(fourier.getImagenOriginal());
              this.jLabelImagenOriginal.setIcon(new ImageIcon(io));
          } catch (IOException ex) {
              Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
@@ -174,6 +192,21 @@ public class JFrameFourier extends javax.swing.JFrame {
          }
         
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+         try {
+             // dim
+             ImageIcon i = (ImageIcon)this.jLabelImagenOriginal.getIcon();
+             int ancho = i.getImage().getWidth(null);
+             int alto = i.getImage().getHeight(null);
+             
+             Image filtro = Filtros.matToImage(Filtros.crearFiltroIdealPasaAltas(new Size(ancho,alto), 70));
+             this.jLabelFiltro.setIcon(new ImageIcon(filtro));
+         
+         } catch (IOException ex) {
+             Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -213,7 +246,9 @@ public class JFrameFourier extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabelEspectro;
+    private javax.swing.JLabel jLabelFiltro;
     private javax.swing.JLabel jLabelImagenOriginal;
     private javax.swing.JPanel jPanelEspectro;
     private javax.swing.JPanel jPanelFiltro;

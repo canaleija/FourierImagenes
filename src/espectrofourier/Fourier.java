@@ -5,6 +5,7 @@
  */
 package espectrofourier;
 
+import filtros.Filtros;
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,20 +41,7 @@ public class Fourier {
       System.out.println();
         
     }
-    public Image matToImage(Mat imagen) throws IOException{
-       
-        // buffer 
-        MatOfByte buffer = new MatOfByte();
-        
-        Imgcodecs.imencode(".png", imagen, buffer);
-        
-        // genera la imagen 
-        ByteArrayInputStream bi = new ByteArrayInputStream(buffer.toArray());
-        Image i = ImageIO.read(bi);
-        
-        return i;
-        
-    }
+    
     //
     
     public Image transformImage() throws IOException{
@@ -71,7 +59,8 @@ public class Fourier {
         Core.dft(complexImage, complexImage);
         // optmización para obtener las magnitudes
         this.magnitude = createOptimzeMagnitude(complexImage);
-      return matToImage(magnitude);
+        
+      return Filtros.matToImage(magnitude);
     }
 
     /**
