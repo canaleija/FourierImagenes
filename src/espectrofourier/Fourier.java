@@ -7,18 +7,15 @@ package espectrofourier;
 
 import filtros.Filtros;
 import java.awt.Image;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 import org.opencv.core.Core;
+
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
-import sun.audio.AudioDataStream;
 
 /**
  *
@@ -97,6 +94,30 @@ public class Fourier {
         
         
         return mag;
+    }
+    
+    public Image antitransformImage() throws IOException
+	{
+		Core.idft(this.complexImage, this.complexImage);
+		
+		Mat restoredImage = new Mat();
+		Core.split(this.complexImage, this.planes);
+		Core.normalize(this.planes.get(0), restoredImage, 0, 255, Core.NORM_MINMAX);
+		
+		
+		return Filtros.matToImage(restoredImage);
+		
+	}
+
+    public Image applyFilter(Mat filter) throws IOException{
+        
+        Mat dest = new Mat(complexImage.size(), CvType.CV_32F);
+        List<Mat> planos = new ArrayList<>();
+        planos.add(filter);
+        planos.add(complexImage);
+        Core.merge(planos, dest);
+        
+        return Filtros.matToImage(dest);
     }
      
     

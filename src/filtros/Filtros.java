@@ -25,7 +25,7 @@ public class Filtros {
     
     public static Mat crearFiltroGaussiano(Size tam, int x){
         
-        Mat filter = new Mat(tam,CvType.CV_32F);
+        Mat filter = new Mat(tam,CvType.CV_64FC2);
         Point center = new Point(tam.width/2, tam.height/2);
         //double data[] = new double[(int)filter.total()*filter.channels()];
         for (int j=0; j < filter.rows();j++)
@@ -64,7 +64,7 @@ public class Filtros {
     }
     public static Mat crearFiltroIdealPasaAltas (Size tam,int radio){
       // instanciar el filtr 
-      Mat filtro = new Mat(tam, CvType.CV_64F);
+      Mat filtro = new Mat(tam, CvType.CV_32F);
       
       int x,y;
       double r;

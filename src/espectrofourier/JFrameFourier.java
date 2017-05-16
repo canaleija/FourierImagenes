@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import org.opencv.core.Mat;
 import org.opencv.core.Size;
 
 /**
@@ -19,7 +20,9 @@ import org.opencv.core.Size;
  */
 public class JFrameFourier extends javax.swing.JFrame {
      String ruta;
+     Mat filtro;
      Fourier fourier ;
+     
     /**
      * Creates new form JFrameFourier
      */
@@ -44,9 +47,11 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelFiltro = new javax.swing.JPanel();
         jLabelFiltro = new javax.swing.JLabel();
         jPanelResultado = new javax.swing.JPanel();
+        jLabelRes = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButtonAplicar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,11 +110,15 @@ public class JFrameFourier extends javax.swing.JFrame {
         jPanelResultado.setLayout(jPanelResultadoLayout);
         jPanelResultadoLayout.setHorizontalGroup(
             jPanelResultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1070, Short.MAX_VALUE)
+            .addGroup(jPanelResultadoLayout.createSequentialGroup()
+                .addComponent(jLabelRes)
+                .addGap(0, 1070, Short.MAX_VALUE))
         );
         jPanelResultadoLayout.setVerticalGroup(
             jPanelResultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 890, Short.MAX_VALUE)
+            .addGroup(jPanelResultadoLayout.createSequentialGroup()
+                .addComponent(jLabelRes)
+                .addGap(0, 890, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Imagen Resultante", jPanelResultado);
@@ -135,6 +144,13 @@ public class JFrameFourier extends javax.swing.JFrame {
             }
         });
 
+        jButtonAplicar.setText("Aplicar");
+        jButtonAplicar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAplicarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,7 +166,9 @@ public class JFrameFourier extends javax.swing.JFrame {
                         .addGap(40, 40, 40)
                         .addComponent(jButton2)
                         .addGap(41, 41, 41)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonAplicar)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -162,7 +180,8 @@ public class JFrameFourier extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButtonAplicar))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -199,14 +218,25 @@ public class JFrameFourier extends javax.swing.JFrame {
              ImageIcon i = (ImageIcon)this.jLabelImagenOriginal.getIcon();
              int ancho = i.getImage().getWidth(null);
              int alto = i.getImage().getHeight(null);
-             
-             Image filtro = Filtros.matToImage(Filtros.crearFiltroIdealPasaAltas(new Size(ancho,alto), 70));
+             this.filtro = Filtros.crearFiltroIdealPasaAltas(new Size(ancho,alto), 70);
+             Image filtro = Filtros.matToImage(this.filtro);
              this.jLabelFiltro.setIcon(new ImageIcon(filtro));
          
          } catch (IOException ex) {
              Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
          }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButtonAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAplicarActionPerformed
+         try {
+             // modificaciones pertinentes a la imagens
+             fourier.applyFilter(filtro);
+             Image resultado = this.fourier.antitransformImage();
+             this.jLabelRes.setIcon(new ImageIcon(resultado));
+         } catch (IOException ex) {
+             Logger.getLogger(JFrameFourier.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }//GEN-LAST:event_jButtonAplicarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -247,9 +277,11 @@ public class JFrameFourier extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonAplicar;
     private javax.swing.JLabel jLabelEspectro;
     private javax.swing.JLabel jLabelFiltro;
     private javax.swing.JLabel jLabelImagenOriginal;
+    private javax.swing.JLabel jLabelRes;
     private javax.swing.JPanel jPanelEspectro;
     private javax.swing.JPanel jPanelFiltro;
     private javax.swing.JPanel jPanelOriginal;
